@@ -82,7 +82,7 @@ def execute_trade():
         pair = request.json.get("pair")
         action = request.json.get("action")
         amount = request.json.get("amount")
-        market_data = trade_executor.search()
+        #market_data = trade_executor.search()
         if action == "buy":
             result = trade_executor.execute_buy(pair, amount)
             
@@ -92,7 +92,7 @@ def execute_trade():
         else:
             return jsonify({"status": "error", "message": "Invalid action"})
 
-        return jsonify({"status": "success", "data": result, "market_data": market_data})
+        return jsonify({"status": "success", "data": result})
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)})
     

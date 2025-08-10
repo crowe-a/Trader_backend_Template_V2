@@ -3,29 +3,44 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from bot import open_browser
 import time
+from selenium.webdriver.common.keys import Keys 
 def execute_buy(pair, amount):
     driver = open_browser.driver
     wait = WebDriverWait(driver, 15)
 
-    buybutton = wait.until(EC.element_to_be_clickable((By.XPATH,
+    # "all" butonuna tıkla
+    sellbutton = wait.until(EC.element_to_be_clickable((By.XPATH,
         '//*[@id="spot-layout"]/div[1]/div/div[3]/div/div[2]/div/div/div[2]/div[1]/div[2]'
     )))
-    buybutton.click()
+    sellbutton.click()
 
+    # Miktar input'unu bul
     amount_input = wait.until(EC.presence_of_element_located((By.XPATH,
-        "//div[text()='Miktar']/following-sibling::div//input"
+        "//div[text()='Toplam']/following-sibling::div//input"
     )))
+
+    # 1) Normal clear
     amount_input.clear()
+    
+    # 2) CTRL+A ve Backspace ile temizle
+    amount_input.send_keys(Keys.CONTROL + "a")
+    amount_input.send_keys(Keys.BACKSPACE)
+
+    # 3) JavaScript ile garanti boşalt
+    driver.execute_script("arguments[0].value = '';", amount_input)
+
+    # Yeni değeri yaz
     amount_input.send_keys(str(amount))
 
+    # "Sat" onay butonuna bas
     confirm_button = wait.until(EC.element_to_be_clickable((By.XPATH,
-        "//button[contains(text(), 'Al')]"
+        "//button[contains(text(), 'Sat')]"
     )))
     confirm_button.click()
 
     return {
         "pair": pair,
-        "type": "buy",
+        "type": "sell",
         "amount": amount
     }
 
@@ -33,18 +48,32 @@ def execute_buy(pair, amount):
 def execute_sell(pair, amount):
     driver = open_browser.driver
     wait = WebDriverWait(driver, 15)
-
+    
     sellbutton = wait.until(EC.element_to_be_clickable((By.XPATH,
         '//*[@id="spot-layout"]/div[1]/div/div[3]/div/div[2]/div/div/div[2]/div[1]/div[3]'
     )))
     sellbutton.click()
 
+    
+    # Miktar input'unu bul
     amount_input = wait.until(EC.presence_of_element_located((By.XPATH,
-        "//div[text()='Miktar']/following-sibling::div//input"
+        "//div[text()='Toplam']/following-sibling::div//input"
     )))
+
+    # 1) Normal clear
     amount_input.clear()
+    
+    # 2) CTRL+A ve Backspace ile temizle
+    amount_input.send_keys(Keys.CONTROL + "a")
+    amount_input.send_keys(Keys.BACKSPACE)
+
+    # 3) JavaScript ile garanti boşalt
+    driver.execute_script("arguments[0].value = '';", amount_input)
+
+    # Yeni değeri yaz
     amount_input.send_keys(str(amount))
 
+    # "Sat" onay butonuna bas
     confirm_button = wait.until(EC.element_to_be_clickable((By.XPATH,
         "//button[contains(text(), 'Sat')]"
     )))

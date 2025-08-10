@@ -145,16 +145,16 @@
         const form = document.getElementById('trade-form');
         const result = document.getElementById('result');
         const executeBtn = document.getElementById('execute-btn');
-
+        const ftcmbtn = document.getElementById('fetch-market-btn')
         // İlk başta "İşlem Yap" butonunu pasif yap
         executeBtn.disabled = true;
-
+        ftcmbtn.disabled = true;
         // 1) Backend'den veri çekme
         form.addEventListener('submit', async function (e) {
             e.preventDefault();
 
             executeBtn.disabled = true; // Form gönderirken butonu tekrar kapat (yeniden bekle)
-
+            ftcmbtn.disabled = true;
             const pair = document.getElementById('pair').value;
             const action = document.getElementById('action').value;
 
@@ -172,11 +172,15 @@
                 document.getElementById('price').value = data.data.price;
                 document.getElementById('type').value = data.data.type;
                 executeBtn.disabled = false;  // Başarılı data geldiyse butonu aktif et
+                ftcmbtn.disabled = false;
+
             } else {
                 document.getElementById('balance').value = '';
                 document.getElementById('price').value = '';
                 document.getElementById('type').value = '';
                 executeBtn.disabled = true;  // Hata veya data yoksa buton pasif kalsın
+                ftcmbtn.disabled = true;
+
             }
         });
 
