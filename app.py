@@ -50,9 +50,9 @@ def get_balance():
 @app.route("/market")
 def market():
     if hasattr(open_browser, "running") and open_browser.running:
-        msg = "Market işlemleri için hazırsınız."
+        msg = "You are ready for market transactions."
     else:
-        msg = "Lütfen önce botu başlatın (/start)."
+        msg = "Please start the bot first (/start)."
 
     return render_template("market.html", message=msg)
 
